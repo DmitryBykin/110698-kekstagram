@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Дмитрий Быкин](https://up.htmlacademy.ru/javascript/6/user/110698).
-* Наставник: `Неизвестно`.
+* Наставник: `Евгений Лепёшкин`.
 
 ---
 
