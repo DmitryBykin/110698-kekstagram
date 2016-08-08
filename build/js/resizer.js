@@ -120,12 +120,6 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
-      /*this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
-			*/
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
@@ -145,12 +139,12 @@
 			this._ctx.fill('evenodd');
 
 			this._ctx.fillStyle = '#FFF';
+      this._ctx.textAlign = "center";
 			this._ctx.font = '16px Arial';
 			var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
-			var MESSAGE_LENGTH = messageResolution.length * 10;
 			var MARGIN_TOP = 5;
 
-			this._ctx.fillText(messageResolution, this._container.width / 2 - MESSAGE_LENGTH / 2 , this._container.height / 2 - this._resizeConstraint.side /2 - this._ctx.lineWidth - MARGIN_TOP);
+			this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side /2 - this._ctx.lineWidth - MARGIN_TOP);
       this._ctx.restore();
     },
 
