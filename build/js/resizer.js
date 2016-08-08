@@ -83,7 +83,7 @@
       // Очистка изображения.
       this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 
-      // Параметры линии.
+			// Параметры линии.
       // NB! Такие параметры сохраняются на время всего процесса отрисовки
       // canvas'a поэтому важно вовремя поменять их, если нужно начать отрисовку
       // чего-либо с другой обводкой.
@@ -111,9 +111,10 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
+			// Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
+      this._ctx.beginPath();
+      this._ctx.rect(
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
@@ -125,6 +126,24 @@
       // 0 0 находится в левом верхнем углу холста, в противном случае
       // некорректно сработает даже очистка холста или нужно будет использовать
       // сложные рассчеты для координат прямоугольника, который нужно очистить.
+
+      this._ctx.stroke();
+      this._ctx.restore();
+
+      this._ctx.rect(0, 0, this._container.width, this._container.height);
+
+      this._ctx.closePath();
+
+      this._ctx.save();
+			this._ctx.fillStyle = 'rgba(0,0,0,0.8)';
+			this._ctx.fill('evenodd');
+
+			this._ctx.fillStyle = '#FFF';
+      this._ctx.textAlign = 'center';
+      this._ctx.textBaseline = 'bottom';
+			this._ctx.font = '16px Arial';
+			var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;			
+      this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side /2 - this._ctx.lineWidth);
       this._ctx.restore();
     },
 
