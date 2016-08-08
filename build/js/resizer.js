@@ -140,11 +140,10 @@
 
 			this._ctx.fillStyle = '#FFF';
       this._ctx.textAlign = 'center';
+      this._ctx.textBaseline = 'bottom';
 			this._ctx.font = '16px Arial';
-			var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
-			var MARGIN_TOP = 5;
-
-			this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side /2 - this._ctx.lineWidth - MARGIN_TOP);
+			var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;			
+      this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side /2 - this._ctx.lineWidth);
       this._ctx.restore();
     },
 
