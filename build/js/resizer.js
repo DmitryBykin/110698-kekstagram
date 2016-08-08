@@ -98,18 +98,18 @@
 
       // Отрисовка рамки с жёлтыми точками
       var RADIUS = 4;  // радиус точки
-      var startX = (-this._resizeConstraint.side / 2 - RADIUS );
-      var startY = (-this._resizeConstraint.side / 2 - RADIUS );
+      var arcOffset = 15; // расстояние между центрами точек
+      // корректируем размер рамки, чтобы угловые точки оказались в точно углах
+      var sideSize = Math.floor(this._resizeConstraint.side / arcOffset) * arcOffset;
+      var startX = (-sideSize / 2 - RADIUS );
+      var startY = (-sideSize / 2 - RADIUS );
 
-      var arcOffset = 12; // расстояние между центрами точек
-      var startOffset = (this._resizeConstraint.side - Math.floor(this._resizeConstraint.side / arcOffset) * arcOffset) / 2; // смещение первых точек
-
-      var xCurrentPosition = startX + startOffset;
-      var yCurrentPosition = startY + startOffset;
+      var xCurrentPosition = startX;
+      var yCurrentPosition = startY;
 
       this._ctx.fillStyle = '#ffe753';
 
-      while (xCurrentPosition < this._resizeConstraint.side / 2 ) {
+      while (xCurrentPosition < sideSize / 2 ) {
         // рисуем верхний ряд
         this._ctx.beginPath();
         this._ctx.arc(xCurrentPosition, startY, RADIUS, 0, 2 * Math.PI, true);
@@ -117,13 +117,13 @@
         this._ctx.closePath();
         // рисуем нижний ряд
         this._ctx.beginPath();
-        this._ctx.arc(xCurrentPosition, startY + this._resizeConstraint.side, RADIUS, 0, 2 * Math.PI, true);
+        this._ctx.arc(xCurrentPosition, startY + sideSize, RADIUS, 0, 2 * Math.PI, true);
         this._ctx.fill();
         this._ctx.closePath();
 
         xCurrentPosition += arcOffset;
       }
-      while (yCurrentPosition < this._resizeConstraint.side / 2) {
+      while (yCurrentPosition < sideSize / 2) {
         // рисуем левый ряд
         this._ctx.beginPath();
         this._ctx.arc(startX, yCurrentPosition, RADIUS, 0, 2 * Math.PI, true);
@@ -131,7 +131,7 @@
         this._ctx.closePath();
         // рисуем правый ряд
         this._ctx.beginPath();
-        this._ctx.arc(startX + this._resizeConstraint.side, yCurrentPosition, RADIUS, 0, 2 * Math.PI, true);
+        this._ctx.arc(startX + sideSize, yCurrentPosition, RADIUS, 0, 2 * Math.PI, true);
         this._ctx.fill();
         this._ctx.closePath();
 
@@ -150,8 +150,8 @@
       this._ctx.rect(
           startX - RADIUS,
           startY - RADIUS,
-          this._resizeConstraint.side + 2 * RADIUS, // длину расширяем за пределы точек
-          this._resizeConstraint.side + 2 * RADIUS);
+          sideSize + 2 * RADIUS, // длину расширяем за пределы точек
+          sideSize + 2 * RADIUS);
       this._ctx.restore();
       // рисуем внешний прямоугольник для затенения
       this._ctx.rect(0, 0, this._container.width, this._container.height);
