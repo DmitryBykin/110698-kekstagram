@@ -139,7 +139,7 @@
 			this._ctx.fill('evenodd');
 
 			this._ctx.fillStyle = '#FFF';
-      this._ctx.textAlign = "center";
+      this._ctx.textAlign = 'center';
 			this._ctx.font = '16px Arial';
 			var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
 			var MARGIN_TOP = 5;
