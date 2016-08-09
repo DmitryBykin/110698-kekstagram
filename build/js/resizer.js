@@ -97,34 +97,6 @@
       this._ctx.drawImage(this._image, displX, displY);
 
       // Отрисовка рамки с жёлтыми точками
-      var RADIUS = 4;  // радиус точки
-      var arcOffset = 15; // расстояние между центрами точек
-      // корректируем размер рамки, чтобы угловые точки оказались в точно углах
-      var sideSize = Math.floor(this._resizeConstraint.side / arcOffset) * arcOffset;
-      var startX = (-sideSize / 2 - RADIUS );
-      var startY = (-sideSize / 2 - RADIUS );
-
-      var xCurrentPosition = startX;
-      var yCurrentPosition = startY;
-
-      this._ctx.fillStyle = '#ffe753';
-
-      while (xCurrentPosition < sideSize / 2 ) {
-        // рисуем верхний ряд
-        drawCircle(this._ctx, xCurrentPosition, startY, RADIUS );
-        // рисуем нижний ряд
-        drawCircle(this._ctx, xCurrentPosition, startY + sideSize, RADIUS );
-
-        xCurrentPosition += arcOffset;
-      }
-      while (yCurrentPosition < sideSize / 2) {
-        // рисуем левый ряд
-        drawCircle(this._ctx, startX, yCurrentPosition, RADIUS );
-        // рисуем правый ряд
-        drawCircle(this._ctx, startX + sideSize, yCurrentPosition, RADIUS );
-
-        yCurrentPosition += arcOffset;
-      }
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
@@ -135,11 +107,35 @@
 
       this._ctx.beginPath();
       // рисуем внутренний прямоугольник для затенения
-      this._ctx.rect(
-          startX - RADIUS,
-          startY - RADIUS,
-          sideSize + 2 * RADIUS, // длину расширяем за пределы точек
-          sideSize + 2 * RADIUS);
+      var zigzagOffset = 15;  // расстояние между зигзагами
+      this._ctx.strokeStyle = '#ffe753';
+      this._ctx.lineWidth = 3;
+      // делаем сторону кратной расстоянию между зигзагами
+      var sideSize = Math.floor(this._resizeConstraint.side / zigzagOffset) * zigzagOffset;
+      var startX = -sideSize / 2;
+      var startY = -sideSize / 2;
+      var xCurrentPosition = startX;
+      var yCurrentPosition = startY;
+
+      while (xCurrentPosition < sideSize / 2 ) {
+        // рисуем верх
+        drawZigzag(this._ctx, xCurrentPosition, startY, zigzagOffset, -1, 'X' );
+        // рисуем низ
+        drawZigzag(this._ctx, xCurrentPosition, startY + sideSize, zigzagOffset, 1, 'X' );
+
+        xCurrentPosition += zigzagOffset;
+      }
+
+      while (yCurrentPosition < sideSize / 2 ) {
+        // рисуем левую часть
+        drawZigzag(this._ctx, startX, yCurrentPosition, zigzagOffset, 1, 'Y' );
+        // рисуем правую часть
+        drawZigzag(this._ctx, startX + sideSize, yCurrentPosition, zigzagOffset, -1, 'Y' );
+
+        yCurrentPosition += zigzagOffset;
+      }
+
+      this._ctx.rect(startX, startY, sideSize, sideSize);
       this._ctx.restore();
       // рисуем внешний прямоугольник для затенения
       this._ctx.rect(0, 0, this._container.width, this._container.height);
@@ -155,7 +151,8 @@
       this._ctx.textBaseline = 'bottom';
       this._ctx.font = '16px Arial';
       var messageResolution = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
-      this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side / 2 - RADIUS);
+      var MARGIN = 10; // сдвиг надписи вверх
+      this._ctx.fillText(messageResolution, this._container.width / 2, this._container.height / 2 - this._resizeConstraint.side / 2 - MARGIN);
       this._ctx.restore();
     },
 
@@ -344,14 +341,21 @@
     this.x = x;
     this.y = y;
   };
-  // функция отрисовки точек
-  var drawCircle = function(ctx, xPosition, yPosition, radius) {
-    ctx.beginPath();
-    ctx.arc(xPosition, yPosition, radius, 0, 2 * Math.PI, true);
-    ctx.fill();
-    ctx.closePath();
-  };
 
+  // функция отрисовки зигзага
+  // axes = 'X' - по Х, 'Y' - по Y
+  // direction = -1 или 1 (направление зигзага внутрь/наружу)
+  var drawZigzag = function(ctx, xPosition, yPosition, offset, direction, axes ) {
+    ctx.moveTo(xPosition, yPosition);
+    if(axes === 'X' ) {
+      ctx.lineTo(xPosition + offset / 2, yPosition + direction * offset / 2 );
+      ctx.lineTo(xPosition + offset, yPosition );
+    } else {
+      ctx.lineTo(xPosition + direction * offset / 2, yPosition + offset / 2 );
+      ctx.lineTo(xPosition, yPosition + offset );
+    }
+    ctx.stroke();
+  };
 
   window.Resizer = Resizer;
 })();
