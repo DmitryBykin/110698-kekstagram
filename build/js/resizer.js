@@ -111,29 +111,17 @@
 
       while (xCurrentPosition < sideSize / 2 ) {
         // рисуем верхний ряд
-        this._ctx.beginPath();
-        this._ctx.arc(xCurrentPosition, startY, RADIUS, 0, 2 * Math.PI, true);
-        this._ctx.fill();
-        this._ctx.closePath();
+        drawCircle(this._ctx, xCurrentPosition, startY, RADIUS );
         // рисуем нижний ряд
-        this._ctx.beginPath();
-        this._ctx.arc(xCurrentPosition, startY + sideSize, RADIUS, 0, 2 * Math.PI, true);
-        this._ctx.fill();
-        this._ctx.closePath();
+        drawCircle(this._ctx, xCurrentPosition, startY + sideSize, RADIUS );
 
         xCurrentPosition += arcOffset;
       }
       while (yCurrentPosition < sideSize / 2) {
         // рисуем левый ряд
-        this._ctx.beginPath();
-        this._ctx.arc(startX, yCurrentPosition, RADIUS, 0, 2 * Math.PI, true);
-        this._ctx.fill();
-        this._ctx.closePath();
+        drawCircle(this._ctx, startX, yCurrentPosition, RADIUS );
         // рисуем правый ряд
-        this._ctx.beginPath();
-        this._ctx.arc(startX + sideSize, yCurrentPosition, RADIUS, 0, 2 * Math.PI, true);
-        this._ctx.fill();
-        this._ctx.closePath();
+        drawCircle(this._ctx, startX + sideSize, yCurrentPosition, RADIUS );
 
         yCurrentPosition += arcOffset;
       }
@@ -356,6 +344,14 @@
     this.x = x;
     this.y = y;
   };
+  // функция отрисовки точек
+  var drawCircle = function(ctx, xPosition, yPosition, radius) {
+    ctx.beginPath();
+    ctx.arc(xPosition, yPosition, radius, 0, 2 * Math.PI, true);
+    ctx.fill();
+    ctx.closePath();
+  };
+
 
   window.Resizer = Resizer;
 })();
