@@ -1,3 +1,3 @@
 'use strict';
-require('js/resizer.js');
-require('js/upload.js');
+require('./resizer.js');
+require('./upload.js');
