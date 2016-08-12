@@ -175,11 +175,10 @@
    * Вешаем на поля формы вызов функции проверки
    */
   function addFormCheckListeners() {
-    var form = document.querySelector('#upload-resize');
-    var xField = form.elements.x;
-    var yField = form.elements.y;
-    var sideField = form.elements.size;
-    var button = form.elements.fwd;
+    var xField = resizeForm.elements.x;
+    var yField = resizeForm.elements.y;
+    var sideField = resizeForm.elements.size;
+    var button = resizeForm.elements.fwd;
 
     xField.oninput = function() {
       checkFormFields(xField, yField, sideField, button);
@@ -199,9 +198,9 @@
    * + перед именем поля - переводит значение в integer
    */
   var checkFormFields = function(xField, yField, sideField, button) {
-    if (+xField.value + +sideField.value > currentResizer._image.naturalWidth ||
-        +yField.value + +sideField.value > currentResizer._image.naturalHeight ||
-        +xField.value < 0 || +yField.value < 0 ) {
+    if (parseInt(xField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalWidth ||
+        parseInt(yField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalHeight ||
+        parseInt(xField.value, 10) < 0 || parseInt(yField.value, 10) < 0 ) {
       button.disabled = true;
     } else {
       button.disabled = false;
