@@ -202,9 +202,9 @@
     if (+xField.value + +sideField.value > currentResizer._image.naturalWidth ||
         +yField.value + +sideField.value > currentResizer._image.naturalHeight ||
         +xField.value < 0 || +yField.value < 0 ) {
-      button.setAttribute('disabled', 'true');
+      button.disabled = true;
     } else {
-      button.removeAttribute('disabled');
+      button.disabled = false;
     }
   };
   /**
