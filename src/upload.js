@@ -160,6 +160,8 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
+
+          addFormCheckListeners();
         };
 
         fileReader.readAsDataURL(element.files[0]);
@@ -169,7 +171,42 @@
       }
     }
   };
+  /**
+   * Вешаем на поля формы вызов функции проверки
+   */
+  function addFormCheckListeners() {
+    var form = document.querySelector('#upload-resize');
+    var xField = form.elements.x;
+    var yField = form.elements.y;
+    var sideField = form.elements.size;
+    var button = form.elements.fwd;
 
+    xField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+    yField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+    sideField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+  }
+  /**
+   * Функция проверки полей
+   * + перед именем поля - переводит значение в integer
+   */
+  var checkFormFields = function(xField, yField, sideField, button) {
+    if (+xField.value + +sideField.value > currentResizer._image.naturalWidth ||
+        +yField.value + +sideField.value > currentResizer._image.naturalHeight ||
+        +xField.value < 0 || +yField.value < 0 ) {
+      button.setAttribute('disabled', 'true');
+    } else {
+      button.removeAttribute('disabled');
+    }
+  };
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
