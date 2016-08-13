@@ -181,31 +181,63 @@
     var button = resizeForm.elements.fwd;
 
     xField.oninput = function() {
+      // сразу при вводе проверяем критерии
+      checkFormFields(xField, yField, sideField, button);
+    };
+    xField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
+      // если были установлены новые значения в поля проверяем критерии еще раз
       checkFormFields(xField, yField, sideField, button);
     };
 
     yField.oninput = function() {
       checkFormFields(xField, yField, sideField, button);
     };
+    yField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
+      checkFormFields(xField, yField, sideField, button);
+    };
 
     sideField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+    sideField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
       checkFormFields(xField, yField, sideField, button);
     };
 
   }
   /**
    * Функция проверки полей
-   * + перед именем поля - переводит значение в integer
+   *
    */
   var checkFormFields = function(xField, yField, sideField, button) {
     if (parseInt(xField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalWidth ||
         parseInt(yField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalHeight ||
-        parseInt(xField.value, 10) < 0 || parseInt(yField.value, 10) < 0 ) {
+        !xField.value || !yField.value || !sideField.value) {
       button.disabled = true;
     } else {
       button.disabled = false;
     }
   };
+  /*
+  * Функция проверки и установки минимальных значений в поля если поля пустые или были введены
+  * значения меньше минимальных
+  */
+  var checkFormFieldsMinValues = function(xField, yField, sideField) {
+    if(parseInt(xField.value, 10) < parseInt(xField.min, 10) || !xField.value) {
+      xField.value = xField.min;
+    } else {
+      if(parseInt(yField.value, 10) < parseInt(yField.min, 10) || !yField.value) {
+        yField.value = yField.min;
+      } else {
+        if(parseInt(sideField.value, 10) < parseInt(sideField.min, 10) || !sideField.value) {
+          sideField.value = sideField.min;
+        }
+      }
+    }
+  };
+
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
