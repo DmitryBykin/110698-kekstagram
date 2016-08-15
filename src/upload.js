@@ -9,6 +9,8 @@
 
 (function() {
   /** @enum {string} */
+  var browserCookies = require('browser-cookies');
+
   var FileType = {
     'GIF': '',
     'JPEG': '',
@@ -273,9 +275,21 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+
+      setFilterFromCookie();
     }
   };
-
+  function setFilterFromCookie() {
+    var filterName = browserCookies.get('upload-filter');
+    var elements = filterForm.elements['upload-filter'];
+    if (filterName) {
+      elements.forEach(function(item) {
+        if(item.value === filterName) {
+          item.checked = true;
+        }
+      });
+    }
+  }
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
@@ -300,8 +314,33 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+
+    saveFilterToCookie();
   };
 
+  function saveFilterToCookie() {
+    var elements = filterForm.elements['upload-filter'];
+    elements.forEach(function(item) {
+      if(item.checked) {
+        browserCookies.set('upload-filter', item.value, {expires: getDaysToExpireCookie() });
+      }
+    });
+  }
+  function getDaysToExpireCookie() {
+    var birthday = new Date(1906, 11, 9); // 9 декабря 1906 г.
+    var curDate = new Date();
+    var curDateMonth = curDate.getMonth();
+    var birthdayMonth = birthday.getMonth();
+    var curDateDay = curDate.getDate();
+    var birthdayDay = birthday.getDate();
+
+    if (curDateMonth === birthdayMonth && curDateDay > birthdayDay) {
+      return curDateDay - birthdayDay;
+    } else {
+      var birthdayLastYear = new Date( curDate.getFullYear() - 1, birthdayMonth, birthdayDay);
+      return Math.ceil( (curDate - birthdayLastYear) / (1000 * 60 * 60 * 24) ); // значение в днях
+    }
+  }
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
