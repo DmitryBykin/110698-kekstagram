@@ -160,12 +160,80 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
+
+          addFormCheckListeners();
         };
 
         fileReader.readAsDataURL(element.files[0]);
       } else {
         // Показ сообщения об ошибке, если формат загружаемого файла не поддерживается
         showMessage(Action.ERROR);
+      }
+    }
+  };
+  /**
+   * Вешаем на поля формы вызов функции проверки
+   */
+  function addFormCheckListeners() {
+    var xField = resizeForm.elements.x;
+    var yField = resizeForm.elements.y;
+    var sideField = resizeForm.elements.size;
+    var button = resizeForm.elements.fwd;
+
+    xField.oninput = function() {
+      // сразу при вводе проверяем критерии
+      checkFormFields(xField, yField, sideField, button);
+    };
+    xField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
+      // если были установлены новые значения в поля проверяем критерии еще раз
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+    yField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+    yField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+    sideField.oninput = function() {
+      checkFormFields(xField, yField, sideField, button);
+    };
+    sideField.onchange = function() {
+      checkFormFieldsMinValues(xField, yField, sideField);
+      checkFormFields(xField, yField, sideField, button);
+    };
+
+  }
+  /**
+   * Функция проверки полей
+   *
+   */
+  var checkFormFields = function(xField, yField, sideField, button) {
+    if (parseInt(xField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalWidth ||
+        parseInt(yField.value, 10) + parseInt(sideField.value, 10) > currentResizer._image.naturalHeight ||
+        !xField.value || !yField.value || !sideField.value) {
+      button.disabled = true;
+    } else {
+      button.disabled = false;
+    }
+  };
+  /*
+  * Функция проверки и установки минимальных значений в поля если поля пустые или были введены
+  * значения меньше минимальных
+  */
+  var checkFormFieldsMinValues = function(xField, yField, sideField) {
+    if(parseInt(xField.value, 10) < parseInt(xField.min, 10) || !xField.value) {
+      xField.value = xField.min;
+    } else {
+      if(parseInt(yField.value, 10) < parseInt(yField.min, 10) || !yField.value) {
+        yField.value = yField.min;
+      } else {
+        if(parseInt(sideField.value, 10) < parseInt(sideField.min, 10) || !sideField.value) {
+          sideField.value = sideField.min;
+        }
       }
     }
   };
