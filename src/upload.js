@@ -280,16 +280,9 @@
     }
   };
   function setFilterFromCookie() {
-    var filterName = browserCookies.get('upload-filter');
-    var elements = filterForm.elements['upload-filter'];
-    if (filterName) {
-      elements.forEach(function(item) {
-        if(item.value === filterName) {
-          item.checked = true;
-          filterImage.className = 'filter-image-preview ' + 'filter-' + filterName;
-        }
-      });
-    }
+    var filterName = browserCookies.get('upload-filter') || 'none';
+    document.querySelector('#upload-filter-' + filterName).checked = true;
+    filterImage.classList.add('filter-' + filterName);
   }
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
@@ -326,17 +319,13 @@
   function getDaysToExpireCookie() {
     var birthday = new Date(1906, 11, 9); // 9 декабря 1906 г.
     var curDate = new Date();
-    var curDateMonth = curDate.getMonth();
-    var birthdayMonth = birthday.getMonth();
-    var curDateDay = curDate.getDate();
-    var birthdayDay = birthday.getDate();
-
-    if (curDateMonth >= birthdayMonth && curDateDay > birthdayDay) {
-      return curDateDay - birthdayDay; // день рождения в текущем году уже прошёл
+    var thisYearBirthday = new Date(curDate.getFullYear(), birthday.getMonth(), birthday.getDate());
+    if (curDate > thisYearBirthday) {
+      return (curDate - thisYearBirthday) / (1000 * 60 * 60 * 24); // день рождения в текущем году уже прошёл
     } else {
       // создаем дату дня рождения в прошлом году
-      var birthdayLastYear = new Date( curDate.getFullYear() - 1, birthdayMonth, birthdayDay);
-      return Math.ceil( (curDate - birthdayLastYear) / (1000 * 60 * 60 * 24) ); // значение в днях
+      var lastYearBirthday = new Date( curDate.getFullYear() - 1, birthday.getMonth(), birthday.getDate());
+      return Math.ceil( (curDate - lastYearBirthday) / (1000 * 60 * 60 * 24) ); // значение в днях
     }
   }
   /**
