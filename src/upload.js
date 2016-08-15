@@ -319,12 +319,8 @@
   };
 
   function saveFilterToCookie() {
-    var elements = filterForm.elements['upload-filter'];
-    elements.forEach(function(item) {
-      if(item.checked) {
-        browserCookies.set('upload-filter', item.value, {expires: getDaysToExpireCookie() });
-      }
-    });
+    var element = document.querySelector('#upload-filter input[type=radio]:checked');
+    browserCookies.set('upload-filter', element.value, {expires: getDaysToExpireCookie() });
   }
   function getDaysToExpireCookie() {
     var birthday = new Date(1906, 11, 9); // 9 декабря 1906 г.
