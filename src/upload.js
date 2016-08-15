@@ -334,9 +334,10 @@
     var curDateDay = curDate.getDate();
     var birthdayDay = birthday.getDate();
 
-    if (curDateMonth === birthdayMonth && curDateDay > birthdayDay) {
-      return curDateDay - birthdayDay;
+    if (curDateMonth >= birthdayMonth && curDateDay > birthdayDay) {
+      return curDateDay - birthdayDay; // день рождения в текущем году уже прошёл
     } else {
+      // создаем дату дня рождения в прошлом году
       var birthdayLastYear = new Date( curDate.getFullYear() - 1, birthdayMonth, birthdayDay);
       return Math.ceil( (curDate - birthdayLastYear) / (1000 * 60 * 60 * 24) ); // значение в днях
     }
