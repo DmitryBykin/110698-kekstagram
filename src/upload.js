@@ -286,6 +286,7 @@
       elements.forEach(function(item) {
         if(item.value === filterName) {
           item.checked = true;
+          filterImage.className = 'filter-image-preview ' + 'filter-' + filterName;
         }
       });
     }
