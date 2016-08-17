@@ -1,13 +1,15 @@
 'use strict';
 
-var getPictures = function(data) {
-  console.log(data);
-};
+(function() {
 
-function addScript(src, callbackFunction) {
-  var elem = document.createElement('script');
-  elem.src = src;
-  elem.src += '?callback=' + callbackFunction.name;
-  document.body.appendChild(elem);
-}
-addScript('http://localhost:1506/api/pictures', getPictures );
+  function addScript(url, callbackFunction) {
+    var elem = document.createElement('script');
+
+    elem.src = url + '/?callback=' + callbackFunction;
+
+    document.body.appendChild(elem);
+  }
+
+  addScript('http://localhost:1506/api/pictures', 'getPictures' );
+
+})();
