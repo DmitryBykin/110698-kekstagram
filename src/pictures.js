@@ -5,61 +5,16 @@
   var picturesContainer = document.querySelector('.pictures');
   var IMAGE_LOAD_TIMEOUT = 10000;
   var elementToClone;
-
-// pictures должны были получить от сервера, но в этом модуле при попытке
-// достучаться до этой переменной - pictures is not defined
-
-  var pictures = [ {
-    'likes': 364,
-    'comments': 2,
-    'url': 'photos/16.jpg'
-  }, {
-    'likes': 115,
-    'comments': 21,
-    'url': 'photos/17.jpg'
-  }, {
-    'likes': 228,
-    'comments': 29,
-    'url': 'photos/18.jpg'
-  }, {
-    'likes': 53,
-    'comments': 26,
-    'url': 'photos/19.jpg'
-  }, {
-    'likes': 240,
-    'comments': 46,
-    'url': 'photos/20.jpg'
-  }, {
-    'likes': 290,
-    'comments': 69,
-    'url': 'photos/21.jpg'
-  }, {
-    'likes': 283,
-    'comments': 33,
-    'url': 'photos/22.jpg'
-  }, {
-    'likes': 344,
-    'comments': 65,
-    'url': 'photos/23.jpg'
-  }, {
-    'likes': 216,
-    'comments': 27,
-    'url': 'photos/24.jpg'
-  }, {
-    'likes': 241,
-    'comments': 36,
-    'url': 'photos/25.jpg'
-  }, {
-    'likes': 100,
-    'comments': 11,
-    'url': 'photos/26.mp4',
-    'preview': 'photos/26.jpg'
-  }];
-
   /*
   * функция, которая создает элемент script для запроса pictures и
   * определяет название callback функции для обработки данных
   */
+  window.getPictures = function(data) {
+    data.forEach(function(picture) {
+      getPictureElement(picture, picturesContainer);
+    });
+  };
+
   function addScript(url, callbackFunction) {
     var elem = document.createElement('script');
     elem.src = url + '/?callback=' + callbackFunction;
@@ -107,9 +62,5 @@
   };
 
   filtersForm.classList.remove('hidden');
-
-  pictures.forEach(function(picture) {
-    getPictureElement(picture, picturesContainer);
-  });
 
 })();
