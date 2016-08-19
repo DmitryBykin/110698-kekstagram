@@ -39,12 +39,13 @@
     container.appendChild(element);
     var backgroundLoadTimeout;
     var backgroundImage = new Image();
+    var imgElement = element.querySelector('img');
 
     backgroundImage.onload = function(evt) {
       clearTimeout(backgroundLoadTimeout);
-      element.querySelector('img').src = evt.target.src;
-      element.querySelector('img').width = '182';
-      element.querySelector('img').height = '182';
+      imgElement.src = evt.target.src;
+      imgElement.width = '182';
+      imgElement.height = '182';
     };
 
     backgroundImage.onerror = function() {
@@ -54,7 +55,7 @@
     backgroundImage.src = data.url;
 
     backgroundLoadTimeout = setTimeout(function() {
-      element.querySelector('img').src = '';
+      imgElement.src = '';
       element.classList.add('picture-load-failure');
     }, IMAGE_LOAD_TIMEOUT);
 
