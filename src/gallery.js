@@ -16,6 +16,7 @@ var Gallery = function() {
 
 Gallery.prototype.setPictures = function(data) {
   pictureElements = picturesContainer.querySelectorAll('.picture');
+  pictureElements = Array.prototype.slice.call(pictureElements);
   this.pictures = data;
 };
 
@@ -44,13 +45,21 @@ Gallery.prototype.hide = function() {
 };
 
 Gallery.prototype.setActivePicture = function(num) {
+  var allPicturesEmpty = pictureElements.every(function(element) {
+    return element.classList.contains('picture-load-failure');
+  });
 
-  while(pictureElements[num].classList.contains('picture-load-failure')) { // пропускаем "пустые" фотографии
-    num++;
-    if(num === this.pictures.length) { // если последняя фотография пустая - начинаем с начала
-      num = 0;
+  if(!allPicturesEmpty) { // если есть непустые фотографии
+    while(pictureElements[num].classList.contains('picture-load-failure')) { // пропускаем "пустые" фотографии
+      num++;
+      if(num === this.pictures.length) { // если последняя фотография пустая - начинаем с начала
+        num = 0;
+      }
     }
+  } else { // если все фотографии пустые показывать нечего
+    return;
   }
+
   this.activePicture = num;
   this.galleryOverlayImage.src = this.pictures[this.activePicture].url;
   this.likesCount.innerHTML = this.pictures[this.activePicture].likes;
