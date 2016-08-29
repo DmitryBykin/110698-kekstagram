@@ -3,10 +3,11 @@
 
 var picturesContainer = document.querySelector('.pictures');
 var pictureElements;
+var allPicturesEmpty = false;
 
 var Gallery = function() {
   this.pictures = [];
-  this.activePicture = this.activePicture || 0;
+  this.activePicture = 0;
   this.galleryOverlay = document.querySelector('.gallery-overlay');
   this.galleryOverlayClose = document.querySelector('.gallery-overlay-close');
   this.galleryOverlayImage = document.querySelector('.gallery-overlay-image');
@@ -17,6 +18,12 @@ var Gallery = function() {
 Gallery.prototype.setPictures = function(data) {
   pictureElements = picturesContainer.querySelectorAll('.picture');
   pictureElements = Array.prototype.slice.call(pictureElements);
+
+// проверяем, все ли фотографии пустые
+  allPicturesEmpty = pictureElements.every(function(element) {
+    return element.classList.contains('picture-load-failure');
+  });
+
   this.pictures = data;
 };
 
@@ -45,25 +52,22 @@ Gallery.prototype.hide = function() {
 };
 
 Gallery.prototype.setActivePicture = function(num) {
-  var allPicturesEmpty = pictureElements.every(function(element) {
-    return element.classList.contains('picture-load-failure');
-  });
-
-  if(!allPicturesEmpty) { // если есть непустые фотографии
+  if(allPicturesEmpty) { // если все фотографии пустые показывать нечего
+    return 0;
+  } else {
     while(pictureElements[num].classList.contains('picture-load-failure')) { // пропускаем "пустые" фотографии
       num++;
-      if(num === this.pictures.length) { // если последняя фотография пустая - начинаем с начала
+      if(num === this.pictures.length) { // начинаем перебирать с начала
         num = 0;
       }
     }
-  } else { // если все фотографии пустые показывать нечего
-    return;
   }
 
   this.activePicture = num;
   this.galleryOverlayImage.src = this.pictures[this.activePicture].url;
   this.likesCount.innerHTML = this.pictures[this.activePicture].likes;
   this.commentsCount.innerHTML = this.pictures[this.activePicture].comments;
+  return num;
 };
 
 define(function() {
