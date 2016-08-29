@@ -28,7 +28,7 @@ Gallery.prototype.show = function(num) {
     if(self.activePicture + 1 === self.pictures.length) {
       self.setActivePicture(0); // переходим на начало
     } else {
-      self.setActivePicture(self.activePicture + 1);
+      self.setActivePicture(self.activePicture + 1); // переходим к следующей фотографии
     }
   };
 
@@ -45,9 +45,9 @@ Gallery.prototype.hide = function() {
 
 Gallery.prototype.setActivePicture = function(num) {
 
-  while(pictureElements[num].classList.contains('picture-load-failure')) {
+  while(pictureElements[num].classList.contains('picture-load-failure')) { // пропускаем "пустые" фотографии
     num++;
-    if(num === this.pictures.length) {
+    if(num === this.pictures.length) { // если последняя фотография пустая - начинаем с начала
       num = 0;
     }
   }
