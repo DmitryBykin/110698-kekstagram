@@ -1,6 +1,5 @@
 'use strict';
 
-
 var picturesContainer = document.querySelector('.pictures');
 var pictureElements;
 var hasNotEmptyPicture = false;
@@ -19,7 +18,7 @@ Gallery.prototype.setPictures = function(data) {
   pictureElements = picturesContainer.querySelectorAll('.picture');
   pictureElements = Array.prototype.slice.call(pictureElements);
 
-// проверяем, есть ли хотя бы одна не пустая фотография
+  // проверяем, есть ли хотя бы одна не пустая фотография
   hasNotEmptyPicture = pictureElements.some(function(element) {
     return !element.classList.contains('picture-load-failure');
   });
