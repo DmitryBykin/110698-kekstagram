@@ -3,7 +3,7 @@
 
 var picturesContainer = document.querySelector('.pictures');
 var pictureElements;
-var allPicturesEmpty = false;
+var hasNotEmptyPicture = false;
 
 var Gallery = function() {
   this.pictures = [];
@@ -19,9 +19,9 @@ Gallery.prototype.setPictures = function(data) {
   pictureElements = picturesContainer.querySelectorAll('.picture');
   pictureElements = Array.prototype.slice.call(pictureElements);
 
-// проверяем, все ли фотографии пустые
-  allPicturesEmpty = pictureElements.every(function(element) {
-    return element.classList.contains('picture-load-failure');
+// проверяем, есть ли хотя бы одна не пустая фотография
+  hasNotEmptyPicture = pictureElements.some(function(element) {
+    return !element.classList.contains('picture-load-failure');
   });
 
   this.pictures = data;
@@ -52,15 +52,15 @@ Gallery.prototype.hide = function() {
 };
 
 Gallery.prototype.setActivePicture = function(num) {
-  if(allPicturesEmpty) { // если все фотографии пустые показывать нечего
-    return 0;
-  } else {
+  if(hasNotEmptyPicture) { // если есть хотя бы одна непустая фотография while не уйдет в бесконечный цикл
     while(pictureElements[num].classList.contains('picture-load-failure')) { // пропускаем "пустые" фотографии
       num++;
       if(num === this.pictures.length) { // начинаем перебирать с начала
         num = 0;
       }
     }
+  } else {
+    return 0; // все фотографии пустые - показывать нечего
   }
 
   this.activePicture = num;
