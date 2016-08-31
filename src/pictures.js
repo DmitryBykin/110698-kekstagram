@@ -8,13 +8,15 @@
 
   filtersForm.classList.add('hidden');
 
-  define(['./review', './gallery', './picture'], function(getPictureElement, gallery, addPicturesListener) {
+  define(['./review', './gallery', './picture'], function(getPictureElement, gallery, Picture) {
     window.getPictures = function(data) {
+      var i = 0;
       data.forEach(function(picture) {
-        getPictureElement(picture, picturesContainer);
+        var curPicture = new Picture(data, getPictureElement(picture), gallery, i);
+        curPicture.addPicture(picturesContainer); // добавляем фотографию на страницу
+        i++;
       });
       gallery.setPictures(data);
-      addPicturesListener(gallery, picturesContainer);
     };
   });
 

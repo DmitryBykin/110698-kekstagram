@@ -12,9 +12,8 @@
   }
 
   define( function() {
-    return function(data, container) {
+    return function(data) {
       var element = elementToClone.cloneNode(true);
-      container.appendChild(element);
       var backgroundLoadTimeout;
       var backgroundImage = new Image();
       var imgElement = element.querySelector('img');
