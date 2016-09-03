@@ -38,7 +38,7 @@ const db = levelup(path.resolve(__dirname, DBNAME), { valueEncoding: 'json' });
 module.exports = {
   regenerate: () => {
     return new Promise((resolve, reject) => {
-      let fileContent = fs.readFileSync(path.resolve(__dirname, 'reviews.json'), 'utf-8');
+      let fileContent = fs.readFileSync(path.resolve(__dirname, 'pictures.json'), 'utf-8');
       let data = JSON.parse(fileContent);
 
       let actions = data.map(rec => ({
