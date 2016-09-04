@@ -12,6 +12,7 @@ var Gallery = function() {
   this.galleryOverlayImage = document.querySelector('.gallery-overlay-image');
   this.likesCount = document.querySelector('.likes-count');
   this.commentsCount = document.querySelector('.comments-count');
+
 };
 
 Gallery.prototype.setPictures = function(data) {
@@ -22,7 +23,6 @@ Gallery.prototype.setPictures = function(data) {
   hasNotEmptyPicture = pictureElements.some(function(element) {
     return !element.classList.contains('picture-load-failure');
   });
-
   this.pictures = data;
 };
 
@@ -38,7 +38,6 @@ Gallery.prototype.show = function(num) {
       self.setActivePicture(self.activePicture + 1); // переходим к следующей фотографии
     }
   };
-
   this.galleryOverlay.classList.remove('invisible');
   this.setActivePicture(num);
 };
