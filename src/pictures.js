@@ -55,6 +55,7 @@
     var scrollTimeout;
 
     window.addEventListener('scroll', function() {
+      pageSize = 12;
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(function() {
         if (isBottomReached() &&
