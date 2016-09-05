@@ -32,8 +32,8 @@
       return footerPosition.top - window.innerHeight - 100 <= GAP;
     };
 
-    var isNextPageAvailable = function(data, curPage, pageSize) {
-      return page < Math.floor(data.length / pageSize);
+    var isNextPageAvailable = function(data, curPage, pagesize) {
+      return page < Math.floor(data.length / pagesize);
     };
 
     var loadPictures = function() {
