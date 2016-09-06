@@ -173,6 +173,7 @@
       }
     }
   };
+
   /**
    * Вешаем на поля формы вызов функции проверки
    */
@@ -182,31 +183,37 @@
     var sideField = resizeForm.elements.size;
     var button = resizeForm.elements.fwd;
 
-    xField.oninput = function() {
+    xField.addEventListener('input', function() {
       // сразу при вводе проверяем критерии
       checkFormFields(xField, yField, sideField, button);
-    };
-    xField.onchange = function() {
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
+    xField.addEventListener('change', function() {
       checkFormFieldsMinValues(xField, yField, sideField);
       // если были установлены новые значения в поля проверяем критерии еще раз
       checkFormFields(xField, yField, sideField, button);
-    };
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
 
-    yField.oninput = function() {
+    yField.addEventListener('input', function() {
       checkFormFields(xField, yField, sideField, button);
-    };
-    yField.onchange = function() {
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
+    yField.addEventListener('change', function() {
       checkFormFieldsMinValues(xField, yField, sideField);
       checkFormFields(xField, yField, sideField, button);
-    };
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
 
-    sideField.oninput = function() {
+    sideField.addEventListener('input', function() {
       checkFormFields(xField, yField, sideField, button);
-    };
-    sideField.onchange = function() {
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
+    sideField.addEventListener('change', function() {
       checkFormFieldsMinValues(xField, yField, sideField);
       checkFormFields(xField, yField, sideField, button);
-    };
+      currentResizer.setConstraint(parseInt(xField.value, 10), parseInt(yField.value, 10), parseInt(sideField.value, 10));
+    });
 
   }
   /**
@@ -240,6 +247,20 @@
     }
   };
 
+  window.addEventListener('resizerchange', function() {
+    var curRes = currentResizer.getConstraint();
+    var xField = resizeForm.elements.x;
+    var yField = resizeForm.elements.y;
+    var sideField = resizeForm.elements.size;
+    var button = resizeForm.elements.fwd;
+
+    xField.value = curRes.x;
+    yField.value = curRes.y;
+    sideField.value = curRes.side;
+
+    checkFormFieldsMinValues(xField, yField, sideField);
+    checkFormFields(xField, yField, sideField, button);
+  });
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
