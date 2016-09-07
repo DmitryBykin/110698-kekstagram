@@ -52,19 +52,23 @@
 
     loadPictures();
 
-    var scrollTimeout;
-
     window.addEventListener('scroll', function() {
-      pageSize = 12;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(function() {
+      throttle(function() {
         if (isBottomReached() &&
-            isNextPageAvailable(picturesData, page, pageSize)) {
+              isNextPageAvailable(picturesData, page, pageSize)) {
           page++;
           loadPictures();
         }
-      }, 100);
+      }, window, 100);
     });
+
+    var throttle = function(method, scope, delay) {
+      delay = delay || 100;
+      clearTimeout(method._tId);
+      method._tId = setTimeout(function() {
+        method.call(scope);
+      }, delay);
+    };
 
     picturesContainer.addEventListener('click', function(evt) { // показ галереи
       evt.preventDefault();
@@ -86,6 +90,7 @@
       activeFilter = 'filter-' + document.querySelector('.filters input[type=radio]:checked').value || 'popular';
       loadPictures(); // перерисовываем фотографии
     }, true);
+
   });
 
   filtersForm.classList.remove('hidden');
