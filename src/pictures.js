@@ -13,6 +13,10 @@
   filtersForm.classList.add('hidden');
 
   define(['./review', './gallery', './picture', './load'], function(getPictureElement, gallery, Picture, load) {
+    var activeFilter = localStorage.getItem('active-filter') || 'filter-popular';
+    // фильтры= filter-popular, filter-new, filter-discussed
+    var filterElement = document.getElementById(activeFilter);
+    filterElement.checked = true;
 
     var showPictures = function(data) {
       data.forEach(function(picture) {
@@ -22,9 +26,6 @@
       });
       gallery.setPictures(picturesData);
     };
-
-    var activeFilter = 'filter-' + document.querySelector('.filters input[type=radio]:checked').value || 'popular';
-    // фильтры= filter-popular, filter-new, filter-discussed
 
     var isBottomReached = function() {
       var GAP = 100;
@@ -86,8 +87,8 @@
       picturesContainer.innerHTML = '';
       picturesData = [];
       page = 0;
-      pageSize = 12;
       activeFilter = 'filter-' + document.querySelector('.filters input[type=radio]:checked').value || 'popular';
+      localStorage.setItem('active-filter', activeFilter);
       loadPictures(); // перерисовываем фотографии
     }, true);
 
