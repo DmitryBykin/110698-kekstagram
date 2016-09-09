@@ -12,7 +12,25 @@ var Gallery = function() {
   this.galleryOverlayImage = document.querySelector('.gallery-overlay-image');
   this.likesCount = document.querySelector('.likes-count');
   this.commentsCount = document.querySelector('.comments-count');
+  this.elementConstructor = function(el) {
+    this.onClick = this.onClick.bind(this);
+    el.addEventListener('click', this.onClick);
+  };
+  this.elementConstructor(this.galleryOverlay);
+};
 
+Gallery.prototype.onClick = function(evt) {
+  if(evt.target.classList.contains('gallery-overlay-close')) {
+    this.hide();
+  } else {
+    if(evt.target.classList.contains('gallery-overlay-image')) {
+      if(this.activePicture + 1 === this.pictures.length) {
+        this.setActivePicture(0); // переходим на начало
+      } else {
+        this.setActivePicture(this.activePicture + 1); // переходим к следующей фотографии
+      }
+    }
+  }
 };
 
 Gallery.prototype.setPictures = function(data) {
@@ -27,17 +45,6 @@ Gallery.prototype.setPictures = function(data) {
 };
 
 Gallery.prototype.show = function(num) {
-  var self = this;
-  this.galleryOverlayClose.onclick = function() {
-    self.hide();
-  };
-  this.galleryOverlay.onclick = function() {
-    if(self.activePicture + 1 === self.pictures.length) {
-      self.setActivePicture(0); // переходим на начало
-    } else {
-      self.setActivePicture(self.activePicture + 1); // переходим к следующей фотографии
-    }
-  };
   this.galleryOverlay.classList.remove('invisible');
   this.setActivePicture(num);
 };
