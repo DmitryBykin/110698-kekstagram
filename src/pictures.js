@@ -77,7 +77,6 @@
         picturesData.forEach(function(picture, ind) {
           if(evt.target.src === evt.target.baseURI + picture.url) {
             gallery.show(ind);
-            gallery.setActivePicture(ind);
           }
         });
       }
