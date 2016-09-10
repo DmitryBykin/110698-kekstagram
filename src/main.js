@@ -1,5 +1,5 @@
 'use strict';
 
-define(['./pictures', './load', './resizer', './upload', ], function() {
+define(['./pictures', './load', './resizer', './upload', './inherit', './base' ], function() {
 
 });
